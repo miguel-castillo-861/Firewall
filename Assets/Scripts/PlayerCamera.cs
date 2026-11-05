@@ -91,6 +91,8 @@ public class PlayerCamera : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             Shoot();
+            //play FX
+            AudioManager.instance.PlaySFXClip(shootSound, transform, 1f);
         }
     }
 
@@ -106,9 +108,5 @@ public class PlayerCamera : MonoBehaviour
                 enemy.Damage(1);
             }
         }
-
-        //play FX
-        audioSource.clip = shootSound;
-        audioSource.Play();
     }
 }

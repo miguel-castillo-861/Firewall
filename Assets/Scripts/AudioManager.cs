@@ -5,6 +5,7 @@ public class AudioManager : MonoBehaviour
     public static AudioManager instance;
 
     [SerializeField] private AudioSource soundFXObject;
+    [SerializeField] float pitchVariance = 0.05f;
 
     private void Awake()
     {
@@ -14,8 +15,10 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlaySoundFXClip(AudioClip audioClip, Transform spawnTransform, float volume)
+    public void PlaySFXClip(AudioClip audioClip, Transform spawnTransform, float volume)
     {
+        float randomPitch = Random.Range(1f - pitchVariance, 1f + 1f + pitchVariance);
+
         AudioSource audioSource = Instantiate(soundFXObject, spawnTransform.position, Quaternion.identity);
 
         audioSource.clip = audioClip;
@@ -23,6 +26,8 @@ public class AudioManager : MonoBehaviour
         audioSource.volume = volume;
 
         audioSource.Play();
+
+        audioSource.pitch = randomPitch;
 
         float clipLength = audioSource.clip.length;
 
