@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerCamera : MonoBehaviour
 {
     private NavMeshAgent agent;
+    [SerializeField] private Transform debugTransform;
+    [SerializeField] private LayerMask aimColliderLayerMask = new LayerMask();
     public Camera playerCamera;
     public float walkSpeed = 6f;
     public float runSpeed = 12f;
@@ -34,8 +37,18 @@ public class PlayerCamera : MonoBehaviour
     void Update()
     {
         Vector3 forward = transform.TransformDirection(Vector3.forward);
+        Vector3 mouseWorldPosition = Vector3.zero;
+        
         Vector3 right = transform.TransformDirection(Vector3.right);
-
+        Vector2 screenCenterPoint = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        Ray ray = Camera.main.ScreenPointToRay(screenCenterPoint);
+        Transform hitTransform = null;
+        if (Physics.Raycast(ray, out RaycastHit raycastHit, 999f, aimColliderLayerMask))
+            {
+            debugTransform.position = raycastHit.point;
+            mouseWorldPosition = raycastHit.point;
+            hitTransform = raycastHit.transform;
+        }
         bool isRunning = Input.GetKey(KeyCode.LeftShift);
         float curSpeedX = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Vertical") : 0;
         float curSpeedY = canMove ? (isRunning ? runSpeed : walkSpeed) * Input.GetAxis("Horizontal") : 0;
@@ -65,5 +78,7 @@ public class PlayerCamera : MonoBehaviour
             playerCamera.transform.localRotation = Quaternion.Euler(rotationX, 0, 0);
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
         }
+
+        //if (Input.GetButton())
     }
 }
