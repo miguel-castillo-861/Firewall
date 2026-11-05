@@ -29,6 +29,10 @@ public class PlayerCamera : MonoBehaviour
     private GameObject FoundObject;
     private string RaycastReturn;
 
+    [SerializeField] private AudioClip shootSound;
+
+    private AudioSource audioSource;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -36,6 +40,7 @@ public class PlayerCamera : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         characterController.enabled = true;
+        audioSource = GetComponent<AudioSource>();
     }
     
     void Update()
@@ -101,5 +106,9 @@ public class PlayerCamera : MonoBehaviour
                 enemy.Damage(1);
             }
         }
+
+        //play FX
+        audioSource.clip = shootSound;
+        audioSource.Play();
     }
 }

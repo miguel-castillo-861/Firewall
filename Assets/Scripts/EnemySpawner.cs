@@ -6,7 +6,6 @@ public class EnemySpawner : MonoBehaviour
 {
     [SerializeField] private Transform[] spawnPoint;
     [SerializeField] private float timer = 0;
-
     [SerializeField] private EnemyMovement enemyPrefab;
     private IObjectPool<EnemyMovement> enemyPool;
 
