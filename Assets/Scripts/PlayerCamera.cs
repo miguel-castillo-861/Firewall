@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerCamera : MonoBehaviour
 {
+    private NavMeshAgent agent;
     public Camera playerCamera;
     public float walkSpeed = 6f;
     public float runSpeed = 12f;
@@ -22,11 +24,13 @@ public class PlayerCamera : MonoBehaviour
 
     void Start()
     {
+        agent = GetComponent<NavMeshAgent>();
         characterController = GetComponent<CharacterController>();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        characterController.enabled = true;
     }
-
+    
     void Update()
     {
         Vector3 forward = transform.TransformDirection(Vector3.forward);
