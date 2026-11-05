@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Pool;
@@ -7,6 +8,7 @@ public class EnemyMovement : MonoBehaviour
     private NavMeshAgent agent;
     private Transform player;
     private IObjectPool<EnemyMovement> enemyPool;
+    public int Health;
 
     public void SetPool(IObjectPool<EnemyMovement> pool)
     {
@@ -43,6 +45,16 @@ public class EnemyMovement : MonoBehaviour
         {
             PlayerCamera player = other.GetComponent<PlayerCamera>();
             Destroy(other.gameObject);
+        }
+    }
+
+    public void Damage(int damage)
+    {
+        Health -= damage;
+
+        if(Health <= 0)
+        {
+            Destroy(gameObject);
         }
     }
 }

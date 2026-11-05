@@ -1,8 +1,8 @@
+using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerCamera : MonoBehaviour
@@ -24,6 +24,10 @@ public class PlayerCamera : MonoBehaviour
     private CharacterController characterController;
 
     private bool canMove = true;
+
+    public Transform FirePoint;
+    private GameObject FoundObject;
+    private string RaycastReturn;
 
     void Start()
     {
@@ -79,6 +83,23 @@ public class PlayerCamera : MonoBehaviour
             transform.rotation *= Quaternion.Euler(0, Input.GetAxis("Mouse X") * lookSpeed, 0);
         }
 
-        //if (Input.GetButton())
+        if (Input.GetMouseButtonDown(0))
+        {
+            Shoot();
+        }
+    }
+
+    public void Shoot()
+    {
+        RaycastHit hit;
+        if(Physics.Raycast(FirePoint.position , transform.TransformDirection(Vector3.forward) , out hit , 100))
+        {
+            EnemyMovement enemy = hit.transform.GetComponent<EnemyMovement>();
+            
+            if(enemy != null)
+            {
+                enemy.Damage(1);
+            }
+        }
     }
 }
